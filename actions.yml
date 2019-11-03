@@ -1,0 +1,7 @@
+name: 'Test WP CLI'
+description: 'Run the full test suite for WP CLI'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}

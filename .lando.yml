@@ -1,0 +1,15 @@
+name: wpcli-test
+recipe: wordpress
+config:
+  webroot: .
+  php: '7.3'
+  xdebug: false
+
+services:
+  appserver:
+    overrides:
+      environment:
+        WP_CLI_TEST_DBUSER: root
+        WP_CLI_TEST_DBPASS: ''
+        WP_CLI_TEST_DBHOST: database
+        WP_VERSION: trunk
