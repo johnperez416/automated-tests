@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['5.6', '8.0']
+        php: ['5.6', '8.1']
         wp: ['latest']
         mysql: ['8.0']
         use-phar: [true]
@@ -109,17 +109,22 @@ jobs:
             mysql: '8.0'
             use-phar: true
             test-package: 'wp-cli-bundle'
-          - php: '8.0'
+          - php: '8.1'
+            wp: 'trunk'
+            mysql: '8.0'
+            use-phar: true
+            test-package: 'wp-cli-bundle'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: wp-cli-bundle
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: wp-cli
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
@@ -130,117 +135,117 @@ jobs:
           #   mysql: '8.0'
           #   use-phar: false
           #   test-package: checksum-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: config-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: core-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: cron-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: db-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: embed-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: entity-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: eval-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: export-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: extension-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: i18n-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: import-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: language-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: maintenance-mode-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: media-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: package-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: rewrite-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: role-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: scaffold-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: search-replace-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: server-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: shell-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
             test-package: super-admin-command
-          - php: '8.0'
+          - php: '8.1'
             wp: 'trunk'
             mysql: '8.0'
             use-phar: false
@@ -311,14 +316,13 @@ jobs:
       - name: Configure DB environment
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
-          export MYSQL_HOST=127.0.0.1
-          export MYSQL_TCP_PORT=${{ job.services.mysql.ports['3306'] }}
+          echo "MYSQL_HOST=127.0.0.1" >> $GITHUB_ENV
+          echo "MYSQL_TCP_PORT=${{ job.services.mysql.ports['3306'] }}" >> $GITHUB_ENV
           echo "WP_CLI_TEST_DBROOTUSER=root" >> $GITHUB_ENV
           echo "WP_CLI_TEST_DBROOTPASS=root" >> $GITHUB_ENV
-          echo "WP_CLI_TEST_DBNAME=wp_cli_test" >> $GITHUB_ENV
           echo "WP_CLI_TEST_DBUSER=wp_cli_test" >> $GITHUB_ENV
           echo "WP_CLI_TEST_DBPASS=password1" >> $GITHUB_ENV
-          echo "WP_CLI_TEST_DBHOST=$MYSQL_HOST:$MYSQL_TCP_PORT" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBHOST=127.0.0.1:${{ job.services.mysql.ports['3306'] }}" >> $GITHUB_ENV
 
       - name: Prepare test database
         if: steps.check_files.outputs.files_exists == 'true'
@@ -330,7 +334,7 @@ jobs:
 
       - name: Conditionally use Phar instead of source
         if: steps.check_files.outputs.files_exists == 'true' && matrix.use-phar == true
-        run: echo "TEST_PHAR=nightly" > $GITHUB_ENV
+        run: echo "TEST_PHAR=nightly" >> $GITHUB_ENV
 
       - name: Run Behat
         if: steps.check_files.outputs.files_exists == 'true'
